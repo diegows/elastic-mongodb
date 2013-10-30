@@ -17,6 +17,21 @@ mongodb:
     - watch:
       - file: /etc/mongodb.conf
 
+salt-minion:
+  service:
+    - running
+    - watch:
+      - pip: pymongo
+
+python-pip:
+  pkg.installed
+
+pymongo:
+  pip:
+    - installed
+    - require:
+      - pkg: python-pip
+
 /etc/mongodb.conf:
   file:
     - exists
