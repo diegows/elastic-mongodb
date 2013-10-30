@@ -7,16 +7,17 @@ def _build_member_list(members):
 
     return ret
 
-def repl_managed(name):
+def repl_managed(name, 
+        replset_name,
+        replset_role,
+        replset_slaves = []):
+
     ret = {
             'name' : name,
             'changes' : {},
             'result' : True,
             'comment' : '' }
 
-    replset_name = __grains__.get("replset_name")
-    replset_role = __grains__.get("replset_role")
-    replset_slaves = __grains__.get("replset_slaves", [])
     if type(replset_slaves) != list:
         ret["result"] = False
         ret["comment"] = "replset_slaves MUST be a list"
@@ -36,6 +37,8 @@ def repl_managed(name):
 
         new_members = []
         for slave in replset_slaves:
+            if slave.find(":") < 0:
+                slave = slave + ":27017"
             if not any(slave == i['host'] for i in repl_config['members']):
                 new_members.append(slave)
 
