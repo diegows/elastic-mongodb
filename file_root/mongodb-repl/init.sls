@@ -1,6 +1,4 @@
 
-{% if grains.has_key("replset_name") and grains.has_key("replset_role") %}
-
 {% set replset_secondaries = [] %}
 {% if grains["replset_role"] == "primary" %}
   {% for minion, grains in salt['mine.get']('*', 'grains.item').items() %}
@@ -28,7 +26,5 @@ mongoset:
 {% for secondary in replset_secondaries %}
       - {{ secondary }}
 {% endfor %}
-{% endif %}
-
 {% endif %}
 
