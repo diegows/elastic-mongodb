@@ -2,9 +2,9 @@
 {% if grains.has_key("replset_name") and grains.has_key("replset_role") %}
 
 {% set replset_secondaries = [] %}
-{% if  grains["replset_role"] == "primary"%}
-  {% for minion, role in salt['mine.get']('*', 'replset_role').items() %}
-    {% if role == "secondary"%}
+{% if grains["replset_role"] == "primary" %}
+  {% for minion, grains in salt['mine.get']('*', 'grains.item').items() %}
+    {% if grains["replset_role"] == "secondary" %}
       {% do replset_secondaries.append(minion) %}
     {% endif %}
   {% endfor %}
