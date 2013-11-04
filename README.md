@@ -28,3 +28,4 @@ TODO
 - Check with mine_functions doesn't work in the pillars.
 - mine_functions should accept a function name argument to avoid confusion with
   you use something like grains.get as function.
+- Move mongodb.conf state to mongodb-base.

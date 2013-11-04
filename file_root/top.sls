@@ -7,3 +7,7 @@ base:
     - match: compound
     - mongodb-repl
 
+  'P@shard_clustername:.*':
+    - match: compound
+    - mongodb-sharding
+
