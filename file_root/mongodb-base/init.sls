@@ -17,11 +17,21 @@ mongodb:
     - watch:
       - file: /etc/mongodb.conf
 
+salt-mine:
+  file:
+    - managed
+    - name: /etc/salt/minion.d/mine.conf
+    - source: salt://mongodb-base/salt-mine.conf
+    - user: root
+    - group: root
+    - mode: 644
+
 salt-minion:
   service:
     - running
     - watch:
       - pip: pymongo
+      - file: salt-mine
 
 python-pip:
   pkg.installed

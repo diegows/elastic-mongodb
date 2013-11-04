@@ -10,7 +10,7 @@ def _build_member_list(members):
 def repl_managed(name, 
         replset_name,
         replset_role,
-        replset_slaves = []):
+        replset_secondaries = []):
 
     ret = {
             'name' : name,
@@ -18,15 +18,15 @@ def repl_managed(name,
             'result' : True,
             'comment' : '' }
 
-    if type(replset_slaves) != list:
+    if type(replset_secondaries) != list:
         ret["result"] = False
-        ret["comment"] = "replset_slaves MUST be a list"
+        ret["comment"] = "replset_secondaries MUST be a list"
 
     if replset_name and replset_role == "primary":
         repl_config =  __salt__['mongodbext.repl_show_config']()
         if repl_config is None:
             repl_config = { '_id' : replset_name, 'version' : 1 }
-            repl_config['members'] = _build_member_list(replset_slaves)
+            repl_config['members'] = _build_member_list(replset_secondaries)
             __salt__['mongodbext.repl_init'](repl_config)
 
             ret["comment"] = "Repl wasn't initiated, initiating..."
@@ -36,7 +36,7 @@ def repl_managed(name,
             ret["comment"] = "Repl already initiated."
 
         new_members = []
-        for slave in replset_slaves:
+        for slave in replset_secondaries:
             if slave.find(":") < 0:
                 slave = slave + ":27017"
             if not any(slave == i['host'] for i in repl_config['members']):
