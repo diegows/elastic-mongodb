@@ -10,8 +10,8 @@ VHGroup
 
 from pymongo import *
 
-def connect():
-    c = MongoClient()
+def connect(port=27017):
+    c = MongoClient(port=port)
     return c
 
 def db_connect(name):
@@ -41,4 +41,21 @@ def repl_reconfig(config):
     c = connect()
     c.admin.command("replSetReconfig", config)
     return True
+
+def add_shard(host, port=27017):
+    c = connect(port)
+    c.admin.command(dict(addShard=host))
+    return True
+
+def list_shards(port=27017):
+    c = connect(port)
+    return c.admin.command(dict(listShards=1))
+
+def db_enable_sharding(db, port=27017):
+    c = connect(port)
+    return c.admin.command(dict(enableSharding=db))
+
+def shard_collection(collection, key, port=27017):
+    c = connect(port)
+    return c.admin.command(dict(shardCollection=collection, key=dict(key=key)))
 

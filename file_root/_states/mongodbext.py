@@ -1,6 +1,12 @@
 
+import socket
+
+from pymongo.errors import OperationFailure
+
 def _build_member_list(members):
     ret = []
+    raise Exception(str(members))
+    members.append(socket.getfqdn())
     members = list(enumerate(members))
     for member in members:
         ret.append(dict(_id=member[0], host=member[1]))
@@ -37,7 +43,7 @@ def repl_managed(name,
 
         new_members = []
         for slave in replset_secondaries:
-            if slave.find(":") < 0:
+            if not ":" in slave:
                 slave = slave + ":27017"
             if not any(slave == i['host'] for i in repl_config['members']):
                 new_members.append(slave)
@@ -49,6 +55,33 @@ def repl_managed(name,
             repl_config['members'] = new_members
             repl_config['version'] += 1
             __salt__['mongodbext.repl_reconfig'](repl_config)
+
+    return ret
+
+
+def set_shards(name, shards=[], port=27017, collection=None, database=None):
+    ret = {
+            'name' : name,
+            'changes' : {},
+            'result' : True,
+            'comment' : '' }
+
+    current_shards = __salt__['mongodbext.list_shards'](port=port)["shards"]
+    current_shards = map(lambda x: x["host"], current_shards)
+    # TODO: do this better please! :)
+    current_shards = ",".join(current_shards)
+    for shard in shards:
+        if shard not in current_shards:
+            __salt__['mongodbext.add_shard'](shard, port=port)
+            ret["changes"][shard] = "shard added"
+
+    #TODO: Check if the database and the collections is sharded in the config
+    #DB.
+    try:
+        __salt__['mongodbext.db_enable_sharding'](database, port=port)
+        __salt__['mongodbext.shard_collection'](collection, port=port)
+    except OperationFailure:
+        pass
 
     return ret
 

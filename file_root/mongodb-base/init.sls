@@ -16,6 +16,24 @@ mongodb:
     - running
     - watch:
       - file: /etc/mongodb.conf
+      - file: /etc/init/mongodb.conf
+
+mongodb-upstart:
+  file:
+    - managed
+    - name: /etc/init/mongodb.conf
+    - source: salt://mongodb-base/mongodb-upstart.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: mongodb
+
+/etc/mongodb.conf:
+  file:
+    - exists
+    - require:
+      - pkg: mongodb-10gen
 
 salt-mine:
   file:
@@ -41,10 +59,4 @@ pymongo:
     - installed
     - require:
       - pkg: python-pip
-
-/etc/mongodb.conf:
-  file:
-    - exists
-    - require:
-      - pkg: mongodb-10gen
 
