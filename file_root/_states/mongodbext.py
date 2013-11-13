@@ -5,7 +5,6 @@ from pymongo.errors import OperationFailure
 
 def _build_member_list(members):
     ret = []
-    raise Exception(str(members))
     members.append(socket.getfqdn())
     members = list(enumerate(members))
     for member in members:
