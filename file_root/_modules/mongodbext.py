@@ -9,6 +9,7 @@ VHGroup
 '''
 
 from pymongo import *
+from pymongo.errors import OperationFailure
 
 def connect(port=27017):
     c = MongoClient(port=port)
@@ -39,7 +40,10 @@ def repl_init(config=None):
 
 def repl_reconfig(config):
     c = connect()
-    c.admin.command("replSetReconfig", config)
+    try:
+        c.admin.command("replSetReconfig", config)
+    except OperationFailure:
+        pass
     return True
 
 def add_shard(host, port=27017):

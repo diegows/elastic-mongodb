@@ -44,12 +44,22 @@ salt-mine:
     - group: root
     - mode: 644
 
+salt-mine-timeout-patch:
+  file:
+    - managed
+    - name: /usr/lib/pymodules/python2.7/salt/modules/mine.py
+    - source: salt://mongodb-base/mine.py
+    - user: root
+    - group: root
+    - mode: 644
+
 salt-minion:
   service:
     - running
     - watch:
       - pip: pymongo
       - file: salt-mine
+      - file: salt-mine-timeout-patch
 
 python-pip:
   pkg.installed

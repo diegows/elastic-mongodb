@@ -16,12 +16,13 @@ HOWTO
 - Set replset_name and replset_role grains to every minion.
 - Roles must be primary or secondary. Only one minion can be primary per set.
 
+Master/SaltCloud install:
 
 ```
 apt-get install python-pip git
 pip install apache-libcloud==0.13.2
-wget -O - http://bootstrap.saltstack.org | sh -s -- -M
-USE_SETUPTOOLS=1 pip install -e git+https://github.com/vhgroup/salt-cloud.git@v0.8.9-stable#egg=salt-cloud
+wget -O - http://bootstrap.saltstack.org | sh -s -- -M -N
+pip install -e git+https://github.com/vhgroup/salt-cloud.git@v0.8.9-stable#egg=salt-cloud
 ```
 
 Setup provider, profile and map. See examples below.
@@ -43,17 +44,23 @@ ROADMAP
 - Basic replica set configuration. DONE
 - Basic sharding support. DONE
 - Sharding + Repl sets. DONE
+- Bootstrap script.
 - Salt cloud integration.
 - Support for delayed replica set members.
+- Implement Salt overstate.
 
 TODO
 ----
 
 - Create dependencies between minions. For example, primary configuration fails
   if secondaries doesn't have the grains replset_name and replset_role.
+    May be not required, use conditionals in templates.
 - tests!!!
-- Check with mine_functions doesn't work in the pillars.
 - mine_functions should accept a function name argument to avoid confusion with
   you use something like grains.get as function.
 - Move mongodb.conf state to mongodb-base.
+- Port assigment: do it right!
+- mine.py patch instead of manage.
 
+- Check with mine_functions doesn't work in the pillars.
+    Is not supported yet.
