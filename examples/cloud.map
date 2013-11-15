@@ -1,0 +1,38 @@
+base_aws:
+% for i in xrange(4):
+  replset${i}-primary:
+    minion:
+      master: ip-10-238-190-246.ec2.internal
+      grains:
+        replset_name: replset${i}
+        replset_role: primary
+  replset${i}-secondary1:
+    minion:
+      master: ip-10-238-190-246.ec2.internal
+      grains:
+        replset_name: replset${i}
+        replset_role: secondary
+  replset${i}-secondary2:
+    minion:
+      master: ip-10-238-190-246.ec2.internal
+      grains:
+        replset_name: replset${i}
+        replset_role: secondary
+% endfor
+
+  config1:
+    minion:
+      master: ip-10-238-190-246.ec2.internal
+      grains:
+        shard_configsvr: True
+        shard_clustername: mongocluster0
+
+  mongos1:
+    minion:
+      master: ip-10-238-190-246.ec2.internal
+      grains:
+        shard_mongos: True
+        shard_clustername: mongocluster0
+        shard_db: data
+        shard_collection: people
+
