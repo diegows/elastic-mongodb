@@ -1,0 +1,11 @@
+127.0.0.1 localhost.localdomain localhost
+
+{%- set addrs = salt['mine.get']('*', 'network.ip_addrs') %}
+
+{%- if addrs is defined %}
+
+{%- for name, addrlist in addrs.items() %}
+{{ addrlist|first() }} {{ name }}.flugel.it {{ name }}
+{%- endfor %}
+
+{% endif %}

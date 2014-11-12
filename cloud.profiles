@@ -1,0 +1,69 @@
+
+1G-rax-secondary:
+  provider: rackspace
+  image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+  size: 4GB Standard Instance
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel02
+      replset_role: secondary
+
+1G-rax-primary:
+  provider: rackspace
+  image: Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)
+  size: 4GB Standard Instance
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel01
+      replset_role: primary
+
+do-shard-01-primary:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel-shard-01
+      replset_role: primary
+
+do-shard-02-primary:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel-shard-02
+      replset_role: primary
+
+do-shard-01-secondary:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel-shard-01
+      replset_role: secondary
+
+do-shard-02-secondary:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      replset_name: flugel-shard-02
+      replset_role: secondary
+

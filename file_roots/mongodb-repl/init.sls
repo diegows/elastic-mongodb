@@ -8,17 +8,17 @@
   {% endfor %}
 {% endif %}
 
-mongodb.conf:
+mongod.conf:
   file:
     - append
-    - name: /etc/mongodb.conf
+    - name: /etc/mongod.conf
     - text: replSet = {{ grains["replset_name"] }}
 
 mongoset:
   mongodbext:
     - repl_managed
     - require:
-      - service.running: mongodb
+      - service: mongod
     - replset_name: {{ grains["replset_name"] }}
     - replset_role: {{ grains["replset_role"] }}
 {% if  grains.get("replset_role") == "primary"%}

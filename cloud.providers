@@ -1,0 +1,24 @@
+
+rackspace:
+  identity_url: 'https://identity.api.rackspacecloud.com/v2.0/tokens'
+  compute_name: cloudServersOpenStack
+  protocol: ipv4
+  compute_region: DFW
+  user: flugel
+  apikey: flugel
+  tenant: flugel
+  provider: openstack
+  ssh_key_file: raxssh.pem
+  ssh_key_name: raxssh
+  script: /etc/salt/install_salt.sh
+  script_args: git v2014.7.0rc7
+
+digital-ocean:
+  provider: digital_ocean
+  client_key: ed25afc4dd335bab38bb1020b9cf5e06
+  api_key: 9a3edd1b53d4f63f0f1e289d0681034c
+  ssh_key_file: flugel-do.pem
+  ssh_key_name: flugel-mongo
+  script: /etc/salt/install_salt.sh
+  script_args: git v2014.7.0rc7
+
