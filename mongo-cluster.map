@@ -13,3 +13,11 @@ do-shard-02-secondary:
   - mongo-secondary01-shard-02
   - mongo-secondary02-shard-02
 
+do-mongos:
+  - mongos
+
+do-mongocfg:
+  - mongocfg01
+  - mongocfg02
+  - mongocfg03
+

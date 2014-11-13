@@ -54,6 +54,7 @@ do-shard-01-secondary:
     grains:
       replset_name: flugel-shard-01
       replset_role: secondary
+      shard_clustername: flugel-cluster
 
 do-shard-02-secondary:
   provider: digital-ocean
@@ -66,4 +67,31 @@ do-shard-02-secondary:
     grains:
       replset_name: flugel-shard-02
       replset_role: secondary
+      shard_clustername: flugel-cluster
+
+do-mongos:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      shard_mongos: true
+      shard_clustername: flugel-cluster
+      shard_db: people
+      shard_collection: data
+
+do-mongocfg:
+  provider: digital-ocean
+  image: 14.04 x64
+  size: 1GB
+  location: New York 2
+  private_networking: true
+  minion:
+    master: 104.131.32.100
+    grains:
+      shard_configsvr: true
+      shard_clustername: flugel-cluster
 

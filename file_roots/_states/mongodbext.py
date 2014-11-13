@@ -71,11 +71,8 @@ def set_shards(name, shards=[], port=27017, collection=None, database=None):
     current_shards = ",".join(current_shards)
     for shard in shards:
         if shard not in current_shards:
-            try:
-                __salt__['mongodbext.add_shard'](shard, port=port)
-                ret["changes"][shard] = "shard added"
-            except Exception:
-                continue
+            __salt__['mongodbext.add_shard'](shard, port=port)
+            ret["changes"][shard] = "shard added"
 
     #TODO: Check if the database and the collections is sharded in the config
     #DB.

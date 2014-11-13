@@ -3,7 +3,7 @@
 {% if grains.get("replset_role") == "primary" %}
   {% for minion, peer_grains in salt['mine.get']('*', 'grains.item').items() %}
     {% if peer_grains.get("replset_role") == "secondary" and grains.get("replset_name") == peer_grains.get("replset_name") %}
-      {% do replset_secondaries.append(peer_grains["fqdn"]) %}
+      {% do replset_secondaries.append(minion + ".flugel.it") %}
     {% endif %}
   {% endfor %}
 {% endif %}

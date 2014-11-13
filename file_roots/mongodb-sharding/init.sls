@@ -44,7 +44,7 @@ mongodb-configsvr:
 {% set shards = [] %}
 {% for minion, grains in salt['mine.get']('*', 'grains.item').items() %}
   {% if grains.get("replset_role") == "primary" %}
-    {% do shards.append(grains["replset_name"] + "/" + grains["fqdn"]) %}
+    {% do shards.append(grains["replset_name"] + "/" + minion + ".flugel.it") %}
   {% endif %}
 {% endfor %}
 
@@ -56,6 +56,12 @@ mongos.conf:
     - user: root
     - group: root
     - template: jinja
+
+mongod:
+  service.dead
+
+/etc/init/mongod.conf:
+  file.absent
 
 mongos-upstart:
   file:
@@ -76,7 +82,7 @@ mongos:
 mongos-shards:
   mongodbext:
     - set_shards
-    - port: 27020
+    - port: 27017
     - database: {{ grains.get("shard_db") }}
     - collection: {{ grains.get("shard_collection") }}
     - key: "_id"
